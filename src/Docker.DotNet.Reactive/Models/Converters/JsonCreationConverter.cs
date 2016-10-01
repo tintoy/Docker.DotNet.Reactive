@@ -6,12 +6,12 @@ using System.Reflection;
 namespace Docker.DotNet.Models.Converters
 {
 	/// <summary>
-	///		JSON converter that that enables custom selection logic during deserialisation for object to create based on the JSON encountered.
+	///		JSON converter that that enables custom selection logic during deserialisation of the object to create based on the JSON encountered.
 	/// </summary>
-	/// <typeparam name="TTBase">
+	/// <typeparam name="TBase">
 	///		The base type of object that the converter can deserialise.
 	/// </typeparam>
-	public abstract class JsonCreationConverter<TTBase>
+	public abstract class JsonCreationConverter<TBase>
 		: JsonConverter
 	{
 		/// <summary>
@@ -46,7 +46,7 @@ namespace Docker.DotNet.Models.Converters
 			if (objectType == null)
 				throw new ArgumentNullException(nameof(objectType));
 
-			return typeof(TTBase).IsAssignableFrom(objectType);
+			return typeof(TBase).IsAssignableFrom(objectType);
 		}
 
 		/// <summary>
@@ -85,13 +85,13 @@ namespace Docker.DotNet.Models.Converters
 					String.Format(
 						"Unexpected token '{0}' encountered while deserialising object of type '{1}'.",
 						reader.TokenType,
-						typeof(TTBase).FullName
+						typeof(TBase).FullName
 					)
 				);
 			}
 
 			JObject json = JObject.Load(reader);
-			TTBase target = Create(objectType, json);
+			TBase target = Create(objectType, json);
 			if (target == null)
 				throw new InvalidOperationException("JsonCreationConverter.Create returned null.");
 
@@ -139,6 +139,6 @@ namespace Docker.DotNet.Models.Converters
 		/// <returns>
 		///		The object instance to be populated.
 		/// </returns>
-		protected abstract TTBase Create(Type objectType, JObject json);
+		protected abstract TBase Create(Type objectType, JObject json);
 	}
 }

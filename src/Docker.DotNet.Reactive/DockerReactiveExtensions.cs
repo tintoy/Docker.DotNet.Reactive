@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -7,7 +9,7 @@ using System.Reactive.Disposables;
 namespace Docker.DotNet
 {
     using Models;
-    using Newtonsoft.Json;
+    using Models.Converters;
 
     /// <summary>
     ///		<see cref="IObservable{T}"/>-related extension methods for the Docker API client.  
@@ -17,7 +19,14 @@ namespace Docker.DotNet
 		/// <summary>
         ///		Default JSON serialisation settings for parsing event data. 
         /// </summary>
-		static JsonSerializerSettings DefaultSerializerSettings => new JsonSerializerSettings();
+		static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
+        {
+			Converters =
+			{
+				new DockerDateConverter(),
+                new StringEnumConverter()
+			}
+		};
 
 		// TODO: Implement JSON contracts (and custom converter) for event payloads.
 
@@ -31,7 +40,7 @@ namespace Docker.DotNet
 		/// 	<see cref="ContainerEventsParameters"/> that control the events returned by the API.
 		/// </param>
         /// <returns>
-		/// 	A sequence of strings containing JSON event data,
+		/// 	A sequence of <see cref="JObject"/>s containing event data.
 		/// </returns>
 		public static IObservable<JObject> ObserveEventsJson(this IMiscellaneousOperations client, ContainerEventsParameters parameters)
 		{
@@ -50,7 +59,7 @@ namespace Docker.DotNet
 		/// 	<see cref="ContainerEventsParameters"/> that control the events returned by the API.
 		/// </param>
         /// <returns>
-		/// 	A sequence of strings containing JSON event data,
+		/// 	A sequence of strings containing JSON event data.
 		/// </returns>
 		public static IObservable<string> ObserveEventsRaw(this IMiscellaneousOperations client, ContainerEventsParameters parameters)
 		{
@@ -76,23 +85,16 @@ namespace Docker.DotNet
 					}
 					catch (EndOfStreamException)
 					{
-						Console.WriteLine("EndOfStreamException");
-
-						subscriber.OnCompleted();
-
-						break;
+						break; // Either way, we're done here.
 					}
 					catch (Exception exception)
 					{
-						Console.WriteLine("EndOfStreamException");
-
 						subscriber.OnError(exception);
 
 						break;
 					}
 				}
 
-				Console.WriteLine("Completed");
 				subscriber.OnCompleted();
 
 				return Disposable.Empty; // Unused; disposal is handled by the outer cancellation from Observable.Create.

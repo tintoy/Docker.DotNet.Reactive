@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 namespace Docker.DotNet.Models
 {
 	/// <summary>
@@ -12,9 +14,28 @@ namespace Docker.DotNet.Models
 
 		// TODO: Document these.
 
+		/// <summary>
+		///		Event relates to a container.
+		/// </summary>
+		[EnumMember(Value = "container")]
 		Container,
+		
+		/// <summary>
+		///		Event relates to an image.
+		/// </summary>
+		[EnumMember(Value = "image")]
 		Image,
-		Volume,
-		Network
+
+		/// <summary>
+		///		Event relates to a network.
+		/// </summary>
+		[EnumMember(Value = "network")]
+		Network,
+		
+		/// <summary>
+		///		Event relates to a volume.
+		/// </summary>
+		[EnumMember(Value = "volume")]
+		Volume
 	}
 }
