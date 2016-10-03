@@ -7,7 +7,7 @@
 	  "defaultNamespace": "Docker.DotNet"
   },
   "dependencies": {
-	  "Docker.DotNet": "2.124.2",
+	  "Docker.DotNet": "2.124.1",
 	  "Newtonsoft.Json": "9.0.1",
 	  "System.Reactive": "3.0.0"
   },

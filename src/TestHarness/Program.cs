@@ -2,6 +2,8 @@
 using System.Threading;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ConsoleApplication
 {
@@ -18,18 +20,18 @@ namespace ConsoleApplication
 					new Uri("unix:///var/run/docker.sock")
 				).CreateClient();
 
-				IObservable<string> obs = client.Miscellaneous.ObserveEventsRaw(
+				IObservable<JObject> obs = client.Reactive().Miscellaneous.ObserveEvents(
 					new ContainerEventsParameters()
 				);
 				var subscription1 = obs.Subscribe(
-					line => Console.WriteLine("S1: {0}", line),
+					eventData => Console.WriteLine("S1: {0}", eventData.ToString(Formatting.Indented)),
 					error => Console.WriteLine("S1: ERROR - {0}", error),
 					() => Console.WriteLine("S1: Completed")
 				);
 				Console.WriteLine("S1: Running");
 
 				var subscription2 = obs.Subscribe(
-					line => Console.WriteLine("S2: {0}", line),
+					eventData => Console.WriteLine("S2: {0}", eventData.ToString(Formatting.Indented)),
 					error => Console.WriteLine("S2: ERROR - {0}", error),
 					() => Console.WriteLine("S2: Completed")
 				);
