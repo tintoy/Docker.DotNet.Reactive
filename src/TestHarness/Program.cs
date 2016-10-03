@@ -15,11 +15,29 @@ namespace ConsoleApplication
 	/// </summary>
 	public class Program
     {
+		/// <summary>
+        ///		The global logger factory. 
+        /// </summary>
 		static readonly ILoggerFactory Loggers = new LoggerFactory().AddConsole();
 
+		/// <summary>
+        ///		The root logger for the test harness. 
+        /// </summary>
+		static readonly ILogger RootLogger = Loggers.CreateLogger("TestHarness");
+		
+		/// <summary>
+        ///		The logger for the first subscription. 
+        /// </summary>
 		static readonly ILogger Sub1Logger = Loggers.CreateLogger("S1");
+		
+		/// <summary>
+        ///		The logger for the second subscription. 
+        /// </summary>
 		static readonly ILogger Sub2Logger = Loggers.CreateLogger("S2");
 
+		/// <summary>
+        ///		The main program entry-point. 
+        /// </summary>
 		public static void Main()
         {
 			SynchronizationContext.SetSynchronizationContext(
@@ -73,7 +91,7 @@ namespace ConsoleApplication
 			}
 			catch (Exception unexpectedError)
 			{
-				Loggers.CreateLogger("TestHarness").LogError(
+				RootLogger.LogError(
 					new EventId(500),
 					unexpectedError,
 					"Unexpected error: {Error}", unexpectedError
