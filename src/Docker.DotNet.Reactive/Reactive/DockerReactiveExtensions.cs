@@ -12,6 +12,7 @@ namespace Docker.DotNet.Reactive
 {
     using Models;
     using Models.Converters;
+    using Models.Events;
 
     /// <summary>
     ///		<see cref="IObservable{T}"/>-related extension methods for the Docker API client.  
@@ -21,16 +22,34 @@ namespace Docker.DotNet.Reactive
 		/// <summary>
         ///		Default JSON serialisation settings for parsing event data. 
         /// </summary>
-		static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
+		static readonly JsonSerializerSettings EventSerializerSettings = new JsonSerializerSettings
         {
 			Converters =
 			{
+				new DockerEventConverter(),
 				new DockerDateConverter(),
                 new StringEnumConverter()
 			}
 		};
 
-		// TODO: Implement JSON contracts (and custom converter) for event payloads.
+		/// <summary>
+        ///		Observe events from the docker API.
+        /// </summary>
+        /// <param name="client">
+		/// 	The Docker miscellaneous operations API. 
+		/// </param>
+        /// <param name="parameters">
+		/// 	Optional <see cref="ContainerEventsParameters"/> that control the events returned by the API.
+		/// </param>
+        /// <returns>
+		/// 	A sequence of <see cref="DockerEvent"/>s representing the events.
+		/// </returns>
+		public static IObservable<DockerEvent> ObserveEvents(this IMiscellaneousOperations client, ContainerEventsParameters parameters = null)
+		{
+			return client.ObserveEventsRaw(parameters).Select(rawEventData =>
+				JsonConvert.DeserializeObject<DockerEvent>(rawEventData, EventSerializerSettings)
+			);
+		}
 
 		/// <summary>
         ///		Observe parsed JSON representing events from the docker API.
@@ -47,7 +66,7 @@ namespace Docker.DotNet.Reactive
 		public static IObservable<JObject> ObserveEventsJson(this IMiscellaneousOperations client, ContainerEventsParameters parameters = null)
 		{
 			return client.ObserveEventsRaw(parameters).Select(rawEventData =>
-				JsonConvert.DeserializeObject<JObject>(rawEventData, DefaultSerializerSettings)
+				JsonConvert.DeserializeObject<JObject>(rawEventData, EventSerializerSettings)
 			);
 		}
 

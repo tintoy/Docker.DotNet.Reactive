@@ -1,11 +1,11 @@
 using System.Runtime.Serialization;
 
-namespace Docker.DotNet.Models
+namespace Docker.DotNet.Models.Events
 {
 	/// <summary>
     ///		Well-known event types used by the Docker API. 
     /// </summary>
-	public enum EventType
+	public enum DockerEventType
 	{
 		/// <summary>
 		///		An unknown event type.

@@ -1,11 +1,11 @@
 using System.Runtime.Serialization;
 
-namespace Docker.DotNet.Models
+namespace Docker.DotNet.Models.Events
 {
 	/// <summary>
-    ///		Represents a source of events for the Docker API. 
+    ///		Represents a target for events from the Docker API. 
     /// </summary>
-	public enum EventSource
+	public enum DockerEventTarget
 	{
 		/// <summary>
 		///		An unknown event source.
