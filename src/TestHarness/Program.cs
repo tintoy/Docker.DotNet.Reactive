@@ -1,57 +1,83 @@
-﻿using System;
-using System.Threading;
-using Docker.DotNet;
+﻿using Docker.DotNet;
 using Docker.DotNet.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace ConsoleApplication
 {
-    public class Program
+	/// <summary>
+	///		Quick-and-dirty test harness for reactive Docker API extensions.
+	/// </summary>
+	public class Program
     {
-        public static void Main()
+		static readonly ILoggerFactory Loggers = new LoggerFactory().AddConsole();
+
+		static readonly ILogger Sub1Logger = Loggers.CreateLogger("S1");
+		static readonly ILogger Sub2Logger = Loggers.CreateLogger("S2");
+
+		public static void Main()
         {
 			SynchronizationContext.SetSynchronizationContext(
 				new SynchronizationContext()
 			);
             try
 			{
-				DockerClient client = new DockerClientConfiguration(
-					new Uri("unix:///var/run/docker.sock")
-				).CreateClient();
+				IConfiguration configuration = new ConfigurationBuilder()
+					.AddJsonFile(
+						Path.Combine(
+							Directory.GetCurrentDirectory(),
+							"appsettings.json"
+						)
+					)
+					.Build();
+
+				DockerClient client =
+					new DockerClientConfiguration(
+						new Uri(configuration["DockerApiEndPoint"])
+					)
+					.CreateClient();
 
 				IObservable<JObject> obs = client.Reactive().Miscellaneous.ObserveEvents(
 					new ContainerEventsParameters()
 				);
 				var subscription1 = obs.Subscribe(
-					eventData => Console.WriteLine("S1: {0}", eventData.ToString(Formatting.Indented)),
-					error => Console.WriteLine("S1: ERROR - {0}", error),
-					() => Console.WriteLine("S1: Completed")
+					eventData => Sub1Logger.LogInformation("{EventData}", eventData.ToString(Formatting.Indented)),
+					error => Sub1Logger.LogError("{Error}", error),
+					() => Sub1Logger.LogInformation("Completed")
 				);
-				Console.WriteLine("S1: Running");
+				Sub1Logger.LogInformation("Running");
 
 				var subscription2 = obs.Subscribe(
-					eventData => Console.WriteLine("S2: {0}", eventData.ToString(Formatting.Indented)),
-					error => Console.WriteLine("S2: ERROR - {0}", error),
-					() => Console.WriteLine("S2: Completed")
+					eventData => Sub2Logger.LogInformation("{EventData}", eventData.ToString(Formatting.Indented)),
+					error => Sub2Logger.LogError("{Error}", error),
+					() => Sub2Logger.LogInformation("Completed")
 				);
-				Console.WriteLine("S2: Running");
+				Sub2Logger.LogInformation("Running");
 
 				using (subscription1)
 				{
 					using (subscription2)
 					{
 						Console.ReadLine();
-						Console.WriteLine("S2: Dispose");
+						Sub1Logger.LogInformation("Dispose");
 					}
 
 					Console.ReadLine();
-					Console.WriteLine("S1: Dispose");
+					Sub2Logger.LogInformation("Dispose");
 				}
 			}
 			catch (Exception unexpectedError)
 			{
-				Console.WriteLine(unexpectedError);
+				Loggers.CreateLogger("TestHarness").LogError(
+					new EventId(500),
+					unexpectedError,
+					"Unexpected error: {Error}", unexpectedError
+				);
 			}
         }
     }

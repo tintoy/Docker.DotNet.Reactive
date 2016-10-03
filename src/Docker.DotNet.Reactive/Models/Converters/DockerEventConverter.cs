@@ -66,6 +66,14 @@ namespace Docker.DotNet.Models.Converters
 		{
 			switch (eventType)
 			{
+				case DockerEventType.Pull:
+				{
+					return new ImagePulled();
+				}
+				case DockerEventType.Push:
+				{
+					return new ImagePushed();
+				}
 				default:
 				{
 					return null;
