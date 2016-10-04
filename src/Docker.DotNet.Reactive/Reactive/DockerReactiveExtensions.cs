@@ -12,7 +12,6 @@ namespace Docker.DotNet.Reactive
 {
     using Models;
     using Models.Converters;
-    using Models.Events;
 
     /// <summary>
     ///		<see cref="IObservable{T}"/>-related extension methods for the Docker API client.  

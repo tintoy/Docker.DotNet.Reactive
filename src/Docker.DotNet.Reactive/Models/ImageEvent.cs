@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Docker.DotNet.Models.Events
+namespace Docker.DotNet.Models
 {
 	/// <summary>
 	/// 	Represents an event relating to an image. 

@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Docker.DotNet.Models.Events
+namespace Docker.DotNet.Models
 {
 	/// <summary>
     ///		Well-known event types used by the Docker API. 

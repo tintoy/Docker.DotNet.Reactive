@@ -3,9 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Docker.DotNet.Models.Converters
 {
-	using Models.Events;
-
-    class DockerEventConverter
+	class DockerEventConverter
         : JsonCreationConverter<DockerEvent>
     {
         protected override DockerEvent Create(Type objectType, JObject json)

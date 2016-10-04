@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace Docker.DotNet.Models.Events
+namespace Docker.DotNet.Models
 {
 	/// <summary>
     ///		The base model for Docker event data. 
