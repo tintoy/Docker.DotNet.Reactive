@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
     <DebugType>portable</DebugType>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <!--<NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>-->
 
-    <Version>0.1.0-beta1</Version>
+    <Version>0.1.0-beta2</Version>
     <Title>Docker.DotNet.Reactive</Title>
     <Description>Reactive Extensions (Rx) support for the .NET Docker client.</Description>
     <Authors>tintoy</Authors>
