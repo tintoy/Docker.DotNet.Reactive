@@ -1,21 +1,20 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4FF0E08B-453C-44A8-A534-2B0812C6CEE3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Docker.DotNet.Reactive", "src\Docker.DotNet.Reactive\Docker.DotNet.Reactive.xproj", "{1F3282F8-E7DB-4E84-941A-4D284D4A9641}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docker.DotNet.Reactive", "src\Docker.DotNet.Reactive\Docker.DotNet.Reactive.csproj", "{1F3282F8-E7DB-4E84-941A-4D284D4A9641}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{67D65BA4-94C5-4C11-953B-3FE57F8718AE}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		global.json = global.json
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TestHarness", "src\TestHarness\TestHarness.xproj", "{0A428B56-CF85-41FE-B316-13C6BE051058}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "src\TestHarness\TestHarness.csproj", "{0A428B56-CF85-41FE-B316-13C6BE051058}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

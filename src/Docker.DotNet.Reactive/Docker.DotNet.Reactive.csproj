@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <DebugType>portable</DebugType>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+
+    <Version>0.1.0-beta1</Version>
+    <Title>Docker.DotNet.Reactive</Title>
+    <Description>Reactive Extensions (Rx) support for the .NET Docker client.</Description>
+    <Authors>tintoy</Authors>
+    <PackageProjectUrl>https://github.com/tintoy/Docker.DotNet.Reactive/</PackageProjectUrl>
+    <PackageTags>docker;dotnet;reactive</PackageTags>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/tintoy/Docker.DotNet.Reactive/master/LICENSE</PackageLicenseUrl>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/tintoy/Docker.DotNet.Reactive</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Docker.DotNet" Version="2.124.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Reactive" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>
