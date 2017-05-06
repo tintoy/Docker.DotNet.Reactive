@@ -15,7 +15,7 @@ namespace Docker.DotNet.Models.Converters
 			if (!Enum.TryParse(eventTargetValue, out eventTarget))
 				throw new InvalidOperationException($"Unsupported event target ('Type' == '{eventTargetValue}').");
 
-			string eventTypeValue = (string)json.GetValue("Type");
+			string eventTypeValue = (string)json.GetValue("Action");
 			DockerEventType eventType;
 			if (!Enum.TryParse(eventTypeValue, out eventType))
 				throw new InvalidOperationException($"Unsupported event type ('status' == '{eventTypeValue}').");
